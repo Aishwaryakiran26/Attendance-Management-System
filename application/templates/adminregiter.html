@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; 
+            background-color: #8e44ad;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 60px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 500px; 
+            height: 500px; 
+            text-align: center;
+        }
+
+        input[type="text"], input[type="password"], input[type="submit"] {
+            width: calc(100% - 24px);
+            padding: 10px; 
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 20px; 
+            font-size: 16px; 
+            font-weight: bold; 
+        }
+
+        input[type="email"], input[type="password"], input[type="submit"] {
+            width: calc(100% - 24px);
+            padding: 10px; 
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 20px; 
+            font-size: 16px; 
+            font-weight: bold; 
+        }
+
+        input[type="submit"] {
+            background-color: #006400; /* Original color */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #004d00; /* Lighter green color on hover */
+        }
+
+        .error {
+            color: red;
+        }
+
+        .captcha-container {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .refresh-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Styling for links */
+        a {
+            color: #6a0dad; /* Dark purple */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="color: #333;">Register</h2>
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+        {% endfor %}
+        {% endif %}
+        <form id="loginForm" method="POST" action="{% url 'admin_register' %}">
+            {% csrf_token %}
+            <input type="text" id="id_adminusername" name="adminusername" placeholder="Username" required maxlength="20" value="{{form.adminusername.value|default_if_none:''}}"/><br>
+            <input type="email" id="id_adminemail" name="adminemail" placeholder="Enter Email" required value="{{form.adminemail.value|default_if_none:''}}"/><br>
+            <input type="password" id="id_adminpassword" name="adminpassword" placeholder="Password" required value="{{form.adminpassword.value|default_if_none:''}}"/><br>
+            <input type="submit" name="submit" value="Signup"> 
+            <br/><br/>
+            <p>If already your account exist click here to <a href="{% url 'adminlogin' %}" >Login</a> </p>
+        </form>
+    </div>
+
+</body>
+</html>

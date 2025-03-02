@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teacher Management System</title>
+    <style>
+        /* Global styles */
+        :root {
+            --primary-color: #9b59b6;
+            --secondary-color: #0056b3;
+            --text-color: #333;
+            --bg-color: #f3f5f9;
+            --accent-color: #ff7f50;
+            --menu-item-font-size: 18px;
+            --footer-color: #8e44ad;
+            --logout-button-color: #006400;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-item {
+            margin-right: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: var(--menu-item-font-size);
+            transition: color 0.3s;
+        }
+
+        .menu-item:hover {
+            color: var(--secondary-color);
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: auto;
+        }
+
+        .footer {
+            background-color: var(--footer-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Existing styles remain the same */
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        input[type=submit] {
+            background-color: #04AA6D;
+            border: none;
+            color: white;
+            padding: 6px 16px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 25px;
+          }
+          .editbutton {
+            background-color: rgb(170, 167, 4); 
+            border: none;
+            color: white;
+            padding: 5px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 25px;
+          }
+          .deletebutton {
+            background-color: rgb(170, 4, 4); 
+            border: none;
+            color: white;
+            padding: 5px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 25px;
+          }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>STUDENT LIST</h1>
+        <div class="menu">
+            <!-- Add menu items here if needed -->
+        </div>
+    </div>
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class="content-wrapper">
+        <div class="container">
+            <h2>Manage Teacher Records</h2>
+            <form method="POST" action="/adminteachersearch"> 
+                {% csrf_token %}
+                <input type="text" id="id_search" name="search" placeholder="Search by Register Number" />
+                <button type="submit"class="editbutton">Search</button>
+                {% if all == 1 %}
+                <a href="{% url 'adminteacher' %}" class="deletebutton">All</a>
+                {% endif %}
+            </form>
+            
+            
+            <table id="student-list">
+                <thead>
+                    <tr>
+                        <th>Teacher ID</th>
+                        <th>Name</th>
+                        <th>Subject</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="student-table-body">
+                    <!-- Student items will be dynamically added here -->
+                    {% with TeacherData=TeacherDatas %}
+                    {% for teachers in TeacherData %}  
+                    <tr>  
+                        <td>{{ teachers.TeacherId }}</td>  
+                        <td>{{ teachers.TeacherName }}</td>  
+                        <td>{{ teachers.TeacherSubject }}</td>  
+                        <td>  
+                            <a href="/adminteacheredit/{{ teachers.TeacherId }}"class="editbutton">Edit</a>  
+                            <a href="/adminteacherdelete/{{ teachers.TeacherId }}" class="deletebutton">Delete</a>  
+                        </td>  
+                    </tr>  
+                {% endfor %}
+                
+                {% endwith %}
+                </tbody>
+            </table>
+            
+            <div>
+                <form method="POST" action="{% url 'adminteacher' %}" id="myForm"> 
+                    {% csrf_token %}
+                    <input type="text" id="id_TeacherId" name="TeacherId"
+                    placeholder="Enter Teacher Id" required value="{{form.TeacherId.value|default_if_none:''}}" />
+                   <input type="text" id="id_TeacherName" name="TeacherName" 
+                    placeholder="Enter Teacher Name" value="{{form.TeacherName.value|default_if_none:''}}" />
+                   <input type="text" id="id_TeacherSubject" name="TeacherSubject" 
+                   placeholder="Enter Teacher Subject" value="{{form.TeacherSubject.value|default_if_none:''}}" />
+                   <input type="submit" id="add-update-btn" class="btn" value='Add Teacher' />
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; 
+            background-color: #8e44ad;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 60px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 500px; 
+            height: 500px; 
+            text-align: center;
+        }
+
+        input[type="text"], input[type="password"], input[type="submit"] {
+            width: calc(100% - 24px);
+            padding: 10px; 
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 20px; 
+            font-size: 16px; 
+            font-weight: bold; 
+        }
+
+        input[type="submit"] {
+            background-color: #006400; /* Original color */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #004d00; /* Lighter green color on hover */
+        }
+
+        .error {
+            color: red;
+        }
+
+        .captcha-container {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .refresh-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Styling for links */
+        a {
+            color: #6a0dad; /* Dark purple */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="color: #333;">Login to Your Account</h2>
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+        {% endfor %}
+        {% endif %}
+        <form id="loginForm" method="POST" action="{% url 'adminlogin' %}">
+            {% csrf_token %}
+            <input type="text" id="id_username" name="username" placeholder="Username" required maxlength="20" value="{{form.username.value|default_if_none:''}}" /><br/>
+            <input type="password" id="id_passwords" name="passwords" placeholder="Password" required  value="{{form.passwords.value|default_if_none:''}}" /><br/>
+            {{ form.captcha }}
+            {% for error in form.captcha.errors %}
+            <p>{{error}}</p>
+            {% endfor %}
+            <br/>
+            <p>click here to New Register <a href="{% url 'admin_register' %}" >SignUP</a> </p>
+            <input type="submit" name="submit" value="LOGIN"> <br/><br/>
+        </form>
+        
+    </div>
+
+</body>
+</html>

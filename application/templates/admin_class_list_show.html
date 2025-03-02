@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Management System</title>
+    <style>
+        /* Global styles */
+        :root {
+            --primary-color: #9b59b6;
+            --secondary-color: #0056b3;
+            --text-color: #333;
+            --bg-color: #f3f5f9;
+            --accent-color: #ff7f50;
+            --menu-item-font-size: 18px;
+            --footer-color: #8e44ad;
+            --logout-button-color: #006400;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-item {
+            margin-right: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: var(--menu-item-font-size);
+            transition: color 0.3s;
+        }
+
+        .menu-item:hover {
+            color: var(--secondary-color);
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: auto;
+        }
+
+        .footer {
+            background-color: var(--footer-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Existing styles remain the same */
+        .container {
+            max-width: 800px;
+            
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        input[type=submit] {
+            background-color: #04AA6D;
+            border: none;
+            color: white;
+            padding: 6px 16px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 25px;
+          }
+          .editbutton {
+            background-color: rgb(170, 167, 4); 
+            border: none;
+            color: white;
+            padding: 5px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 25px;
+          }
+          .deletebutton {
+            background-color: rgb(170, 4, 4); 
+            border: none;
+            color: white;
+            padding: 5px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 25px;
+          }
+          .Showbutton {
+            background-color: rgb(151, 4, 170); 
+            border: none;
+            color: white;
+            padding: 5px 200px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 25px;
+          }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Class LIST</h1>
+        <div class="menu">
+            <!-- Add menu items here if needed -->
+        </div>
+    </div>
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class="content-wrapper">
+        <div class="container">
+ 
+            <h2>Manage Class Records</h2>
+
+            <br/>
+            <br/>
+            <a href="{% url 'adminclass' %}" class="Showbutton">Add class</a> 
+            <table border="1" id="student-list">
+                <thead>
+                    <tr>
+                        <th>Class Name</th>
+                        <th>Class Teacher</th>
+                        <th>Class Room</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="student-table-body">
+                    
+                    {% with ClassData=ClassDatas %}
+                    {% for class in ClassData %}  
+                    <tr>  
+                        <td>{{ class.className }}</td>  
+                        <td>{{ class.classTeacher }}</td>  
+                        <td>{{ class.classRoom }}</td>  
+                        <td>  
+                            <a href="/adminclassedit/{{ class.id }}"class="editbutton">Edit</a>  
+                            <a href="/adminclassdelete/{{ class.id }}" class="deletebutton">Delete</a>  
+                        </td>  
+                    </tr>  
+                {% endfor %}
+                
+                {% endwith %}
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+
+    <div class="footer">
+        <p></p>
+    </div>
+</body>
+</html>
